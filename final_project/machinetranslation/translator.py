@@ -1,8 +1,12 @@
-import json
-from ibm_watson import LanguageTranslatorV3
-from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+"""
+Module to translate strings
+developer: GP
+"""
+
 import os
 from dotenv import load_dotenv
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from ibm_watson import LanguageTranslatorV3
 
 load_dotenv()
 
@@ -17,18 +21,25 @@ language_translator = LanguageTranslatorV3(
 
 language_translator.set_service_url(url)
 
-def englishToFrench(englishText):
+def english_to_french(english_text):
+    """
+    Function to translate from English to French
+    """
     translation = language_translator.translate(
-    text=englishText,
+    text=english_text,
     model_id='en-fr').get_result()
-    frenchText = json.dumps(translation, indent=2, ensure_ascii=False)
-    return frenchText
+    french_text = translation['translations'][0].get('translation')
+    return french_text
 
-def frenchToEnglish(frenchText):
+def french_to_english(french_text):
+    """
+    Function to translate from French to English
+    """
     translation = language_translator.translate(
-    text=frenchText,
+    text=french_text,
     model_id='fr-en').get_result()
-    englishText = json.dumps(translation, indent=2, ensure_ascii=False)
-    return englishText
+    english_text = translation['translations'][0].get('translation')
+    return english_text
 
-print(englishToFrench('Hello, how are you my friend ?'))
+if __name__ == "__main__":
+    pass
